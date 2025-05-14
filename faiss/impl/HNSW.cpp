@@ -954,6 +954,21 @@ HNSWStats HNSW::search(
                     greedy_update_nearest(*this, qdis, level, nearest, d_nearest);
             stats.combine(local_stats);
         }
+    } else {
+        // strided entry policy like flatnav
+        constexpr int ncomparisons = 128;
+        int ntotal = levels.size();
+
+        idx_t stride = std::max<idx_t>(1, ntotal / ncomparisons);
+        for (idx_t i = 0; i < ntotal; i += stride) {
+            float d_current = qdis(i);
+            if (d_current < d_nearest) {
+                nearest = i;
+                d_nearest = d_current;
+            }
+        }
+
+        stats.ndis += ncomparisons;
     }
 
     int ef = std::max(efSearch, k);
