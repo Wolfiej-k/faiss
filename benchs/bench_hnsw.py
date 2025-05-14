@@ -33,7 +33,7 @@ xt = ds.get_train()
 nq, d = xq.shape
 
 if todo == []:
-    todo = 'hnsw hnsw_sq ivf ivf_hnsw_quantizer kmeans kmeans_hnsw nsg'.split()
+    todo = 'hnsw'.split()
 
 
 def evaluate(index):
@@ -61,6 +61,7 @@ if 'hnsw' in todo:
     # this is the default, higher is more accurate and slower to
     # construct
     index.hnsw.efConstruction = 40
+    index.hnsw.search_bounded_queue = True
 
     print("add")
     # to see progress
@@ -69,10 +70,10 @@ if 'hnsw' in todo:
 
     print("search")
     for efSearch in 16, 32, 64, 128, 256:
-        for bounded_queue in [True, False]:
-            print("efSearch", efSearch, "bounded queue", bounded_queue, end=' ')
-            index.hnsw.search_bounded_queue = bounded_queue
+        for use_hnsw_layers in [True, False]:
+            print("efSearch", efSearch, "use hnsw layers", use_hnsw_layers, end=' ')
             index.hnsw.efSearch = efSearch
+            index.hnsw.use_hnsw_layers = use_hnsw_layers
             evaluate(index)
 
 if 'hnsw_sq' in todo:

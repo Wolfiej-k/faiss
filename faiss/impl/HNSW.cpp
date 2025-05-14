@@ -944,14 +944,16 @@ HNSWStats HNSW::search(
         }
     }
 
-    //  greedy search on upper levels
     storage_idx_t nearest = entry_point;
     float d_nearest = qdis(nearest);
 
-    for (int level = max_level; level >= 1; level--) {
-        HNSWStats local_stats =
-                greedy_update_nearest(*this, qdis, level, nearest, d_nearest);
-        stats.combine(local_stats);
+    if (use_hnsw_layers) {
+        // greedy search on upper levels
+        for (int level = max_level; level >= 1; level--) {
+            HNSWStats local_stats =
+                    greedy_update_nearest(*this, qdis, level, nearest, d_nearest);
+            stats.combine(local_stats);
+        }
     }
 
     int ef = std::max(efSearch, k);
