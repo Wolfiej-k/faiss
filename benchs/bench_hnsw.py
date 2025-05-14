@@ -45,9 +45,9 @@ def evaluate(index):
     t1 = time.time()
 
     missing_rate = (I == -1).sum() / float(k * nq)
-    recall_at_1 = (I == gt[:, :1]).sum() / float(nq)
-    print("\t %7.3f ms per query, R@1 %.4f, missing rate %.4f" % (
-        (t1 - t0) * 1000.0 / nq, recall_at_1, missing_rate))
+    recall_at_k = sum(gt[i, 0] in I[i, :] for i in range(nq)) / float(nq)
+    print("\t %7.3f ms per query, R@%d %.4f, missing rate %.4f" % (
+        (t1 - t0) * 1000.0 / nq, k, recall_at_k, missing_rate))
 
 
 if 'hnsw' in todo:
