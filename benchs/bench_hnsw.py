@@ -8,12 +8,12 @@ import sys
 import numpy as np
 import faiss
 
-try:
-    from faiss.contrib.datasets_fb import DatasetSIFT1M
-except ImportError:
-    from faiss.contrib.datasets import DatasetSIFT1M
+# try:
+#     from faiss.contrib.datasets_fb import DatasetSIFT1M
+# except ImportError:
+#     from faiss.contrib.datasets import DatasetSIFT1M
 
-# from datasets import load_sift1M
+from datasets import load_sift1M
 
 
 k = int(sys.argv[1])
@@ -21,14 +21,14 @@ todo = sys.argv[2:]
 
 print("load data")
 
-# xb, xq, xt, gt = load_sift1M()
+xb, xq, xt, gt = load_sift1M()
 
-ds = DatasetSIFT1M()
+# ds = DatasetSIFT1M()
 
-xq = ds.get_queries()
-xb = ds.get_database()
-gt = ds.get_groundtruth()
-xt = ds.get_train()
+# xq = ds.get_queries()
+# xb = ds.get_database()
+# gt = ds.get_groundtruth()
+# xt = ds.get_train()
 
 nq, d = xq.shape
 
