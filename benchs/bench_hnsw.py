@@ -10,20 +10,18 @@ import faiss
 
 try:
     from faiss.contrib.datasets_fb import DatasetSIFT1M
+    from faiss.contrib.datasets_fb import DatasetGIST1M
 except ImportError:
     from faiss.contrib.datasets import DatasetSIFT1M
-
-# from datasets import load_sift1M
-
+    from faiss.contrib.datasets import DatasetGIST1M
 
 k = int(sys.argv[1])
 todo = sys.argv[2:]
 
 print("load data")
 
-# xb, xq, xt, gt = load_sift1M()
-
-ds = DatasetSIFT1M()
+# ds = DatasetSIFT1M()
+ds = DatasetGIST1M()
 
 xq = ds.get_queries()
 xb = ds.get_database()
